@@ -1,11 +1,21 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 app = Flask(__name__)
+
+todos = [
+    { "label": "Walk dog", "done": False },
+]
 
 @app.route('/todos', methods=['GET'])
 def hello_world():
-    return "<h1>Hello!</h1>"
+    json_text = jsonify(todos)
+    return json_text
 
-
+@app.route('/todos', methods=['POST'])
+def add_new_todo():
+    request_body = request.json
+    print("Incoming request with the following body", request_body) 
+    todos.append(request_body)
+    return jsonify(todos)
 
 
 if __name__ == '__main__':
